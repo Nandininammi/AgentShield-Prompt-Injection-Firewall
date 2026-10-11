@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="AgentShield.API/AgentShield.API.csproj" />
+  <Project Path="AgentShield.Application/AgentShield.Application.csproj" />
+  <Project Path="AgentShield.Domain/AgentShield.Domain.csproj" />
+  <Project Path="AgentShield.Infrastructure/AgentShield.Infrastructure.csproj" />
+</Solution>
