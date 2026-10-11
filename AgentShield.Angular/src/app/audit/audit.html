@@ -1,0 +1,39 @@
+<div class="audit-page">
+  <header class="page-header">
+    <div>
+      <h1>Security Audit Logs</h1>
+      <p>Review scanned prompts and security decisions.</p>
+    </div>
+
+    <button type="button" (click)="loadAuditLogs()">
+      Refresh Logs
+    </button>
+  </header>
+
+
+
+@if (loading) {
+  <div class="loading">Loading audit logs...</div>
+} @else if (errorMessage) {
+  <div class="error">{{ errorMessage }}</div>
+} @else if (logs.length === 0) {
+  <div class="empty">No audit logs found.</div>
+} @else {
+  <div class="audit-list">
+    @for (log of logs; track log.id) {
+      <article class="audit-card">
+        <h3>{{ log.content }}</h3>
+        <p>{{ log.timestamp | date:'medium' }}</p>
+        <p><strong>Threat detected:</strong> {{ log.threatDetected ? 'Yes' : 'No' }}</p>
+        <p><strong>Severity:</strong> {{ log.severity }}</p>
+        <p><strong>Confidence:</strong> {{ log.confidence * 100 }}%</p>
+        <p><strong>Attack types:</strong> {{ log.attackTypes.join(', ') }}</p>
+        <p><strong>Action:</strong> {{ log.action }}</p>
+        <p><strong>Detection method:</strong> {{ log.detectionMethod }}</p>
+        <p><strong>Explanation:</strong> {{ log.explanation }}</p>
+      </article>
+    }
+  </div>
+}
+
+</div>

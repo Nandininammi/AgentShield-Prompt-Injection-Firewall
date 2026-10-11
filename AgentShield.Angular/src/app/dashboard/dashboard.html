@@ -1,0 +1,131 @@
+<div class="dashboard">
+
+  <!-- Header -->
+  <header class="topbar">
+    <div>
+      <h1>AgentShield</h1>
+      <p>AI Agent Security & Prompt Injection Firewall</p>
+    </div>
+
+    <div class="status">
+      <span class="status-dot"></span>
+      System Protected
+    </div>
+  </header>
+
+  <!-- Loading -->
+  @if (loading) {
+    <div class="loading">
+      Loading security dashboard...
+    </div>
+  }
+
+  <!-- Error -->
+  @if (errorMessage) {
+    <div class="error">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <!-- Dashboard Content -->
+  @if (!loading) {
+
+    <!-- Summary Cards -->
+    <section class="summary-grid">
+
+      <div class="summary-card">
+        <div class="card-label">Total Scans</div>
+        <div class="card-value">
+          {{ summary.totalScans }}
+        </div>
+      </div>
+
+      <div class="summary-card danger">
+        <div class="card-label">Threats Blocked</div>
+        <div class="card-value">
+          {{ summary.threatsBlocked }}
+        </div>
+      </div>
+
+      <div class="summary-card success">
+        <div class="card-label">Requests Allowed</div>
+        <div class="card-value">
+          {{ summary.requestsAllowed }}
+        </div>
+      </div>
+
+      <div class="summary-card warning">
+        <div class="card-label">Requests for Review</div>
+        <div class="card-value">
+          {{ summary.requestsForReview }}
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Attack Types -->
+  
+<section class="panel">
+  <div class="panel-header">
+    <div>
+      <h2>Attack Types</h2>
+      <p>Detected prompt injection attack categories</p>
+    </div>
+  </div>
+
+  <div class="attack-list">
+    @for (attack of attackTypes; track attack.attackType) {
+      <div class="attack-row">
+        <div class="attack-info">
+          <span class="attack-name">{{ attack.attackType }}</span>
+        </div>
+        <div class="attack-count">{{ attack.count }}</div>
+      </div>
+    } @empty {
+      <div class="empty">No attacks detected yet.</div>
+    }
+  </div>
+</section>
+
+<section class="panel recent-events">
+  <div class="panel-header">
+    <div>
+      <h2>Recent Security Events</h2>
+      <p>Latest five scanned prompts and security decisions</p>
+    </div>
+  </div>
+
+  @if (auditLogs.length === 0) {
+    <div class="empty">No security events available yet.</div>
+  } @else {
+    <div class="events-list">
+      @for (event of auditLogs; track event.id) {
+        <div class="event-row">
+          <div class="event-main">
+            <div class="event-content">{{ event.content }}</div>
+            <div class="event-meta">
+              {{ event.timestamp | date:'medium' }}
+              · {{ event.severity }}
+              @if (event.attackTypes.length > 0) {
+                · {{ event.attackTypes.join(', ') }}
+              }
+            </div>
+          </div>
+
+          <span
+            class="event-action"
+            [class.blocked]="event.action.toLowerCase() === 'block'"
+            [class.allowed]="event.action.toLowerCase() === 'allow'"
+            [class.review]="event.action.toLowerCase() === 'review'">
+            {{ event.action }}
+          </span>
+        </div>
+      }
+    </div>
+  }
+</section>
+
+
+  }
+
+</div>
